@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payback Report</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f4f4f4;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center; /* centre horizontally */
+    }
+
+    .button-container {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    .button-container a {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #007acc;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+    }
+
+    .button-container a:hover {
+      background: #005fa3;
+    }
+
+    iframe {
+      width: 1300px;
+      height: 1000px;
+      margin-top: 80px; /* spacing below the button */
+      border: none;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <a href="https://jvasqu19.github.io/velo/">Mapa Barrera Peaje</a>
+  </div>
+
+  <iframe 
+    src="https://lookerstudio.google.com/embed/reporting/aadaf8d7-521b-48f7-b537-0418f7616d77/page/SR8ZF"
+    frameborder="0"
+    allowfullscreen
+    sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+  </iframe>
+</body>
+</html>
