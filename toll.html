@@ -3,120 +3,454 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Peaje Barrera</title>
+  <title>Mapa Barrera - Peaje Escobero Envg</title>
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      color: #333;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* Button in top-left */
-    .button-container {
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      min-height: 100vh;
+      color: #1a1a2e;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Background Decorative Shapes */
+    .background-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .shape {
       position: absolute;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 50%;
+      filter: blur(40px);
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .shape1 {
+      width: 400px;
+      height: 400px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape2 {
+      width: 300px;
+      height: 300px;
+      bottom: 20%;
+      right: 15%;
+      animation-delay: 7s;
+    }
+
+    .shape3 {
+      width: 500px;
+      height: 500px;
+      top: 50%;
+      left: 50%;
+      animation-delay: 3s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      33% {
+        transform: translate(50px, -50px) scale(1.1);
+      }
+      66% {
+        transform: translate(-30px, 30px) scale(0.9);
+      }
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Dashboard Button */
+    .dashboard-button {
+      position: fixed;
       top: 20px;
       left: 20px;
       z-index: 1000;
+      animation: slideInLeft 0.6s ease-out;
     }
 
-    .button-container a {
-      display: inline-block;
-      padding: 10px 20px;
-      background: #007acc;
-      color: #fff;
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .dashboard-button a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      color: white;
       text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-      transition: background 0.3s ease;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 
+        0 8px 24px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .button-container a:hover {
-      background: #005fa3;
+    .dashboard-button a:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateX(-5px);
+      box-shadow: 
+        0 12px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
-    /* Top section with iframe */
-    .top-section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      background: #e9ecef;
+    .arrow-icon {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s ease;
     }
 
-    iframe {
-      width: 1200px;
-      height: 400px;
+    .dashboard-button a:hover .arrow-icon {
+      transform: translateX(-3px);
+    }
+
+    /* Map Section */
+    .map-section {
+      margin-top: 80px;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .map-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .map-card:hover {
+      box-shadow: 
+        0 24px 70px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transform: translateY(-5px);
+    }
+
+    .map-header {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .map-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 6px;
+    }
+
+    .map-header p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 500;
+    }
+
+    .map-container {
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .iframe-wrapper {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .iframe-wrapper iframe {
+      width: 100%;
+      height: 100%;
       border: none;
-      border-radius: 12px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+      background: white;
     }
 
-    /* Bottom section with info */
-    .bottom-section {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      padding: 40px 20px;
-      background: #fff;
+    /* Info Section */
+    .info-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+      animation: fadeIn 1s ease-out 0.4s both;
     }
 
-    .info-block {
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .info-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 24px;
       display: flex;
       align-items: center;
-      width: 350px;
-      margin: 20px;
-      background: #f9f9f9;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 20px;
+      gap: 20px;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: scaleIn 0.5s ease-out backwards;
     }
 
-    .info-block img {
+    .info-card:nth-child(1) { animation-delay: 0.5s; }
+    .info-card:nth-child(2) { animation-delay: 0.6s; }
+    .info-card:nth-child(3) { animation-delay: 0.7s; }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .info-card:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 16px 48px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    .info-icon {
       width: 80px;
       height: 80px;
+      border-radius: 16px;
       object-fit: cover;
-      border-radius: 8px;
-      margin-right: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      font-weight: bold;
+      flex-shrink: 0;
     }
 
-    .info-block p {
-      margin: 0;
-      font-size: 16px;
-      line-height: 1.4;
+    .info-card:hover .info-icon {
+      transform: rotate(5deg) scale(1.1);
+    }
+
+    .info-content {
+      flex: 1;
+    }
+
+    .info-content h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-content p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: fadeIn 1.2s ease-out 0.6s both;
+    }
+
+    footer p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+      font-weight: 500;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .dashboard-button {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+      }
+
+      .map-section {
+        margin-top: 60px;
+      }
+
+      .map-header h1 {
+        font-size: 22px;
+      }
+
+      .iframe-wrapper {
+        height: 350px;
+      }
+
+      .info-section {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .info-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .info-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+      }
     }
   </style>
 </head>
 <body>
-
-  <!-- Dashboard button -->
-  <div class="button-container">
-    <a href="https://linkusage.github.io/velo">Dashboard</a>
+  <!-- Background Decorative Shapes -->
+  <div class="background-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
   </div>
 
-  <!-- Top section with iframe -->
-  <div class="top-section">
-    <iframe src="https://linkusage.github.io/velo/map.html"></iframe>
+  <!-- Dashboard Button -->
+  <div class="dashboard-button">
+    <a href="https://linkusage.github.io/velo">
+      <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Dashboard
+    </a>
   </div>
 
-  <!-- Bottom section with info blocks -->
-  <div class="bottom-section">
-    <div class="info-block">
-      <img src="https://via.placeholder.com/80" alt="Placeholder 1">
-      <p><strong>Heading 1:</strong> Some text goes here. You can edit this later to explain the first point.</p>
+  <div class="container">
+    <!-- Map Section -->
+    <div class="map-section">
+      <div class="map-card">
+        <div class="map-header">
+          <h1>Mapa de Barrera de Peaje</h1>
+          <p>Ubicación y monitoreo en tiempo real</p>
+        </div>
+        <div class="map-container">
+          <div class="iframe-wrapper">
+            <iframe 
+              src="https://linkusage.github.io/velo/map.html"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="info-block">
-      <img src="https://via.placeholder.com/80" alt="Placeholder 2">
-      <p><strong>Heading 2:</strong> Another block of text to describe your second item, event, or detail.</p>
+    <!-- Info Section -->
+    <div class="info-section">
+      <div class="info-card">
+        <div class="info-icon">1</div>
+        <div class="info-content">
+          <h3>Monitoreo en Tiempo Real</h3>
+          <p>Visualización instantánea del estado de las barreras y flujo vehicular en todas las estaciones de peaje.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">2</div>
+        <div class="info-content">
+          <h3>Análisis de Tráfico</h3>
+          <p>Estadísticas detalladas sobre patrones de tráfico, horarios pico y optimización de operaciones.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">3</div>
+        <div class="info-content">
+          <h3>Gestión Operativa</h3>
+          <p>Herramientas avanzadas para administrar recursos, personal y mantenimiento de infraestructura.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="info-block">
-      <img src="https://via.placeholder.com/80" alt="Placeholder 3">
-      <p><strong>Heading 3:</strong> Final bit of text for the third section. Replace with your own content.</p>
-    </div>
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 Peaje Escobero Envg - Sistema de Monitoreo</p>
+    </footer>
   </div>
-
 </body>
 </html>
